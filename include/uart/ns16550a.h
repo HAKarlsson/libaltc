@@ -1,7 +1,7 @@
 #include "serio.h"
 
 #define UART_NS16550A(_base)                                               \
-	(SERIOFILE)                                                          \
+	(SERIOFILE)                                                        \
 	{                                                                  \
 		.fputchar = uart_ns16550a_fputchar,                        \
 		.fgetchar = uart_ns16550a_fgetchar, .base = (void *)_base, \

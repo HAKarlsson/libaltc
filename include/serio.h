@@ -130,4 +130,4 @@ int serio_read(char *s, size_t size);
  */
 int serio_printf(const char *format, ...);
 
-int serio_vprintf(const char *format, va_list ap); 
+int serio_vprintf(const char *format, va_list ap);

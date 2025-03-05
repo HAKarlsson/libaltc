@@ -1,7 +1,7 @@
 #include "serio.h"
 
 #define UART_SIFIVE(_base)                                               \
-	(SERIOFILE)                                                        \
+	(SERIOFILE)                                                      \
 	{                                                                \
 		.fputchar = uart_sifive_fputchar,                        \
 		.fgetchar = uart_sifive_fgetchar, .base = (void *)_base, \
