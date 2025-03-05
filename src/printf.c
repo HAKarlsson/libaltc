@@ -1,93 +1,36 @@
-#include "altio.h"
+#include "serio.h"
 
 #include <limits.h>
 #include <stdarg.h>
 #include <stddef.h>
-#include <stdint.h>
 
-#define BUFFER_FILE(_buf, _size)                                          \
-	(struct buffer_file)                                              \
-	{                                                                 \
-		.fputchar = buffer_fputchar, .buf = (char *)_buf, .i = 0, \
-		.size = _size                                             \
-	}
-
-struct buffer_file {
-	int (*fputchar)(int c, ALTFILE *);
-	int (*fgetchar)(ALTFILE *);
-	char *buf;
-	size_t i;
-	size_t size;
-};
-
-static int buffer_fputchar(int c, ALTFILE *f)
-{
-	struct buffer_file *bf = (struct buffer_file *)f;
-	if (bf->i >= bf->size)
-		return -1;
-	bf->buf[bf->i++] = c;
-	return 0;
-}
-
-int alt_printf(const char *fmt, ...)
+int serio_printf(const char *fmt, ...)
 {
 	va_list ap;
 	va_start(ap, fmt);
-	int length = alt_vprintf(fmt, ap);
+	int length = serio_vfprintf(altout, fmt, ap);
 	va_end(ap);
 	return length;
 }
 
-int alt_vprintf(const char *fmt, va_list ap)
+int serio_vprintf(const char *fmt, va_list ap)
 {
-	return alt_vfprintf(altout, fmt, ap);
+	return serio_vfprintf(altout, fmt, ap);
 }
 
-int alt_sprintf(char *s, const char *fmt, ...)
+int serio_fprintf(SERIOFILE *f, const char *fmt, ...)
 {
 	va_list ap;
 	va_start(ap, fmt);
-	int length = alt_vsprintf(s, fmt, ap);
+	int length = serio_vfprintf(f, fmt, ap);
 	va_end(ap);
 	return length;
 }
 
-int alt_vsprintf(char *s, const char *fmt, va_list ap)
-{
-	struct buffer_file bf = BUFFER_FILE(s, INT_MAX);
-	alt_vfprintf((ALTFILE *)&bf, fmt, ap);
-	return bf.i;
-}
-
-int alt_snprintf(char *s, size_t n, const char *fmt, ...)
-{
-	va_list ap;
-	va_start(ap, fmt);
-	int length = alt_vsnprintf(s, n, fmt, ap);
-	va_end(ap);
-	return length;
-}
-
-int alt_vsnprintf(char *s, size_t n, const char *fmt, va_list ap)
-{
-	struct buffer_file bf = BUFFER_FILE(s, n);
-	alt_vfprintf((ALTFILE *)&bf, fmt, ap);
-	return bf.i;
-}
-
-int alt_fprintf(ALTFILE *f, const char *fmt, ...)
-{
-	va_list ap;
-	va_start(ap, fmt);
-	int length = alt_vfprintf(f, fmt, ap);
-	va_end(ap);
-	return length;
-}
-
-void _print_hex(ALTFILE *f, unsigned long long x)
+void _print_hex(SERIOFILE *f, unsigned long long x)
 {
 	if (!x) {
-		alt_fputchar('0', f);
+		serio_fputchar('0', f);
 		return;
 	}
 
@@ -102,17 +45,15 @@ void _print_hex(ALTFILE *f, unsigned long long x)
 		x >>= 4;
 	}
 	while (i) {
-		alt_fputchar(hex[--i], f);
+		serio_fputchar(hex[--i], f);
 	}
 }
 
-int alt_vfprintf(ALTFILE *f, const char *fmt, va_list ap)
+int serio_vfprintf(SERIOFILE *f, const char *fmt, va_list ap)
 {
-	/* TODO */
-
 	while (*fmt != '\0') {
 		if (*fmt != '%') {
-			alt_fputchar(*fmt, f);
+			serio_fputchar(*fmt, f);
 			fmt++;
 			continue;
 		}
@@ -130,17 +71,17 @@ int alt_vfprintf(ALTFILE *f, const char *fmt, va_list ap)
 		} break;
 		case 'c': {
 			char c = va_arg(ap, int);
-			alt_fputchar(c, f);
+			serio_fputchar(c, f);
 		} break;
 		case 's': {
 			char *s = va_arg(ap, char *);
-			alt_fputstr(s, f);
+			serio_fputstr(s, f);
 		} break;
 		default:
-			alt_fputchar(*fmt, f);
+			serio_fputchar(*fmt, f);
 		}
 		fmt++;
 	}
-	alt_fputchar('\0', f);
+	serio_fputchar('\0', f);
 	return 0;
 }

@@ -1,11 +1,11 @@
-#include "altio.h"
+#include "serio.h"
 
-int alt_fputchar(int c, ALTFILE *f)
+int serio_fputchar(int c, SERIOFILE *f)
 {
 	return f->fputchar(c, f);
 }
 
-int alt_putchar(int c)
+int serio_putchar(int c)
 {
-	return alt_fputchar(c, altout);
+	return serio_fputchar(c, altout);
 }

@@ -1,5 +1,5 @@
-#include "altc/uart/sifive.h"
-//
+#include "uart/sifive.h"
+
 // Bit masks for transmit and receive adata registers
 #define TXDATA_FULL 0x80000000ul
 #define RXDATA_EMPTY 0x80000000ul
@@ -21,14 +21,14 @@ struct uart_sifive_regs {
 	int div;    // Baud rate divisor
 };
 
-void uart_sifive_init(ALTFILE *f)
+void uart_sifive_init(SERIOFILE *f)
 {
 	volatile struct uart_sifive_regs *uart = f->base;
 	uart->txctrl = TXCTRL_TXEN; // Enable transmit data
 	uart->rxctrl = RXCTRL_RXEN; // Enable receive data
 }
 
-int uart_sifive_fputchar(int c, ALTFILE *f)
+int uart_sifive_fputchar(int c, SERIOFILE *f)
 {
 	volatile struct uart_sifive_regs *uart = f->base;
 	while (uart->txdata & TXDATA_FULL) {
@@ -37,7 +37,7 @@ int uart_sifive_fputchar(int c, ALTFILE *f)
 	return (unsigned char)c;
 }
 
-int uart_sifive_fgetchar(ALTFILE *f)
+int uart_sifive_fgetchar(SERIOFILE *f)
 {
 	volatile struct uart_sifive_regs *uart = f->base;
 	int c;

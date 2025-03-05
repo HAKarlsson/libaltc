@@ -1,13 +1,13 @@
-project('libaltc', 'c', version : '1.0')
+project('libserio', 'c', version : '1.0')
 
 subdir('src')
 incdirs = include_directories('include')
 
-altc_lib = static_library(
-  'altc',
+libserio = static_library(
+  'serio',
   sources,
   include_directories : incdirs)
 
-altc_dep = declare_dependency(
-  link_with : altc_lib,
+libserio_dep = declare_dependency(
+  link_with : libserio,
   include_directories : incdirs)

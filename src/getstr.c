@@ -1,10 +1,10 @@
-#include "altio.h"
+#include "serio.h"
 
-int alt_fgetstr(char *s, size_t size, ALTFILE *f)
+int serio_fgetstr(char *s, size_t size, SERIOFILE *f)
 {
 	size_t i;
 	for (i = 0; i < size - 1; ++i) {
-		int c = f->getchar(f);
+		int c = f->fgetchar(f);
 		if (c == EOF || c == '\0') {
 			break;
 		}
@@ -14,7 +14,7 @@ int alt_fgetstr(char *s, size_t size, ALTFILE *f)
 	return i;
 }
 
-int alt_getstr(char *s, size_t size)
+int serio_getstr(char *s, size_t size)
 {
-	return alt_fgetstr(s, size, altin);
+	return serio_fgetstr(s, size, altin);
 }

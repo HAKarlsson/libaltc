@@ -1,6 +1,6 @@
-#include "altio.h"
+#include "serio.h"
 
-int alt_fputstr(const char *s, ALTFILE *f)
+int serio_fputstr(const char *s, SERIOFILE *f)
 {
 	size_t i;
 	for (i = 0; s[i] != '\0'; ++i) {
@@ -11,7 +11,7 @@ int alt_fputstr(const char *s, ALTFILE *f)
 	return i;
 }
 
-int alt_putstr(const char *s)
+int serio_putstr(const char *s)
 {
-	return alt_fputstr(s, altout);
+	return serio_fputstr(s, altout);
 }

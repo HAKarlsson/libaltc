@@ -1,6 +1,6 @@
-#include "altio.h"
+#include "serio.h"
 
-int alt_fwrite(const char *s, size_t size, ALTFILE *f)
+int serio_fwrite(const char *s, size_t size, SERIOFILE *f)
 {
 	size_t i;
 	for (i = 0; i < size; ++i) {
@@ -11,7 +11,7 @@ int alt_fwrite(const char *s, size_t size, ALTFILE *f)
 	return i; // Return the number of bytes successfully written
 }
 
-int alt_write(const char *s, size_t size, ALTFILE *f)
+int serio_write(const char *s, size_t size)
 {
-	return alt_fwrite(s, size, altout);
+	return serio_fwrite(s, size, altout);
 }

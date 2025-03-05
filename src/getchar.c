@@ -1,11 +1,11 @@
-#include "altio.h"
+#include "serio.h"
 
-int alt_fgetchar(ALTFILE *f)
+int serio_fgetchar(SERIOFILE *f)
 {
 	return f->fgetchar(f);
 }
 
-int alt_getchar(void)
+int serio_getchar(void)
 {
-	return alt_fgetchar(altin);
+	return serio_fgetchar(altin);
 }

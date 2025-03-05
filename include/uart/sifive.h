@@ -1,11 +1,11 @@
-#include "altc/altio.h"
+#include "serio.h"
 
 #define UART_SIFIVE(_base)                                               \
-	(ALTFILE)                                                        \
+	(SERIOFILE)                                                        \
 	{                                                                \
 		.fputchar = uart_sifive_fputchar,                        \
 		.fgetchar = uart_sifive_fgetchar, .base = (void *)_base, \
 	}
 
-int uart_sifive_fputchar(int c, ALTFILE *f);
-int uart_sifive_fgetchar(ALTFILE *f);
+int uart_sifive_fputchar(int c, SERIOFILE *f);
+int uart_sifive_fgetchar(SERIOFILE *f);

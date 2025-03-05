@@ -1,6 +1,6 @@
-#include "altio.h"
+#include "serio.h"
 
-int alt_fread(char *s, size_t size, ALTFILE *f)
+int serio_fread(char *s, size_t size, SERIOFILE *f)
 {
 	size_t i;
 	for (i = 0; i < size; ++i) {
@@ -13,7 +13,7 @@ int alt_fread(char *s, size_t size, ALTFILE *f)
 	return i; // Return the number of bytes successfully read
 }
 
-int alt_read(char *s, size_t size)
+int serio_read(char *s, size_t size)
 {
-	return alt_fread(s, size, altin);
+	return serio_fread(s, size, altin);
 }
