@@ -82,6 +82,6 @@ int serio_vfprintf(SERIOFILE *f, const char *fmt, va_list ap)
 		}
 		fmt++;
 	}
-	serio_fputchar('\0', f);
+	/* TODO: return number of characters written. */
 	return 0;
 }
