@@ -1,4 +1,4 @@
-#include "altc/altio.h"
+#include "altio.h"
 
 int alt_fgetchar(ALTFILE *f)
 {

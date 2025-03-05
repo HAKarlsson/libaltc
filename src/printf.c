@@ -1,4 +1,4 @@
-#include "altc/altio.h"
+#include "altio.h"
 
 #include <limits.h>
 #include <stdarg.h>

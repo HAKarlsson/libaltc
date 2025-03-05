@@ -1,13 +1,14 @@
-#include "altc/altio.h"
+#include "altio.h"
 
 int alt_fputstr(const char *s, ALTFILE *f)
 {
-	while (*s != '\0') {
-		f->fputchar(*s, f);
-		s++;
+	size_t i;
+	for (i = 0; s[i] != '\0'; ++i) {
+		if (f->fputchar(s[i], f) == EOF) {
+			return -1;
+		}
 	}
-	f->fputchar('\0', f);
-	return 0;
+	return i;
 }
 
 int alt_putstr(const char *s)

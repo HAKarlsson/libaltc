@@ -1,16 +1,20 @@
-#include "altc/altio.h"
+#include "altio.h"
 
-int alt_fgetstr(char *s, int size, ALTFILE *f)
+int alt_fgetstr(char *s, size_t size, ALTFILE *f)
 {
-	for (int i = 0; i < size; ++i) {
-		s[i] = f->fgetchar(f);
-		if (s[i] == '\0')
-			return i;
+	size_t i;
+	for (i = 0; i < size - 1; ++i) {
+		int c = f->getchar(f);
+		if (c == EOF || c == '\0') {
+			break;
+		}
+		s[i] = c;
 	}
-	return size;
+	s[i] = '\0';
+	return i;
 }
 
-int alt_getstr(char *s, int size)
+int alt_getstr(char *s, size_t size)
 {
 	return alt_fgetstr(s, size, altin);
 }
