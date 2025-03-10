@@ -16,5 +16,5 @@ int serio_fgetstr(char *s, size_t size, SERIOFILE *f)
 
 int serio_getstr(char *s, size_t size)
 {
-	return serio_fgetstr(s, size, altin);
+	return serio_fgetstr(s, size, _serio_in);
 }

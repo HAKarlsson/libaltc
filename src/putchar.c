@@ -7,5 +7,5 @@ int serio_fputchar(int c, SERIOFILE *f)
 
 int serio_putchar(int c)
 {
-	return serio_fputchar(c, altout);
+	return serio_fputchar(c, _serio_out);
 }

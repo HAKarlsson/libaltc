@@ -13,5 +13,5 @@ int serio_fputstr(const char *s, SERIOFILE *f)
 
 int serio_putstr(const char *s)
 {
-	return serio_fputstr(s, altout);
+	return serio_fputstr(s, _serio_out);
 }

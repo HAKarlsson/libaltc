@@ -7,5 +7,5 @@ int serio_fgetchar(SERIOFILE *f)
 
 int serio_getchar(void)
 {
-	return serio_fgetchar(altin);
+	return serio_fgetchar(_serio_in);
 }

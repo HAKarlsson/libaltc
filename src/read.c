@@ -15,5 +15,5 @@ int serio_fread(char *s, size_t size, SERIOFILE *f)
 
 int serio_read(char *s, size_t size)
 {
-	return serio_fread(s, size, altin);
+	return serio_fread(s, size, _serio_in);
 }

@@ -1,6 +1,6 @@
 #include "serio.h"
 
-#define UART_SIFIVE(_base)                                               \
+#define SERIO_UART_SIFIVE(_base)                                               \
 	(SERIOFILE)                                                      \
 	{                                                                \
 		.fputchar = uart_sifive_fputchar,                        \

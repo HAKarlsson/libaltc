@@ -8,14 +8,14 @@ int serio_printf(const char *fmt, ...)
 {
 	va_list ap;
 	va_start(ap, fmt);
-	int length = serio_vfprintf(altout, fmt, ap);
+	int length = serio_vfprintf(_serio_out, fmt, ap);
 	va_end(ap);
 	return length;
 }
 
 int serio_vprintf(const char *fmt, va_list ap)
 {
-	return serio_vfprintf(altout, fmt, ap);
+	return serio_vfprintf(_serio_out, fmt, ap);
 }
 
 int serio_fprintf(SERIOFILE *f, const char *fmt, ...)

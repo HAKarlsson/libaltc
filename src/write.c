@@ -13,5 +13,5 @@ int serio_fwrite(const char *s, size_t size, SERIOFILE *f)
 
 int serio_write(const char *s, size_t size)
 {
-	return serio_fwrite(s, size, altout);
+	return serio_fwrite(s, size, _serio_out);
 }

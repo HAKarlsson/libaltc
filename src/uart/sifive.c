@@ -1,4 +1,4 @@
-#include "uart/sifive.h"
+#include "serio/uart/sifive.h"
 
 // Bit masks for transmit and receive adata registers
 #define TXDATA_FULL 0x80000000ul

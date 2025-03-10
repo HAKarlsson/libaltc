@@ -1,4 +1,4 @@
-#include "uart/ns16550a.h"
+#include "serio/uart/ns16550a.h"
 
 // Line status register flags
 #define LSR_RX_READY 0x1  // Receive data ready

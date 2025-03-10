@@ -1,6 +1,6 @@
 #include "serio.h"
 
-#define UART_NS16550A(_base)                                               \
+#define SERIO_UART_NS16550A(_base)                                               \
 	(SERIOFILE)                                                        \
 	{                                                                  \
 		.fputchar = uart_ns16550a_fputchar,                        \

@@ -14,8 +14,8 @@ struct seriofile {
 	void *base;
 };
 
-extern SERIOFILE *const altout;
-extern SERIOFILE *const altin;
+extern SERIOFILE *const _serio_out;
+extern SERIOFILE *const _serio_in;
 
 /**
  * Writes a character to an SERIOFILE object.
