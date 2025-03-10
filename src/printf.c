@@ -59,12 +59,12 @@ void _print_dec(SERIOFILE *f, unsigned long long x, bool neg)
 
 	char dec[32];
 	int i = 0;
-	if (neg)
-		dec[i++] = '-';
 	while (x) {
 		dec[i++] = '0' + (x % 10);
 		x /= 10;
 	}
+	if (neg)
+		dec[i++] = '-';
 
 	while (i) {
 		serio_fputchar(dec[--i], f);
