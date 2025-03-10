@@ -49,6 +49,24 @@ void _print_hex(SERIOFILE *f, unsigned long long x)
 	}
 }
 
+void _print_dec(SERIOFILE *f, unsigned long long x)
+{
+	if (!x) {
+		serio_fputchar('0', f);
+		return;
+	}
+
+	char dec[32];
+	int i = 0;
+	while (x) {
+		hex[i++] = '0' + (x % 10);
+		x /= 10;
+	}
+	while (i) {
+		serio_fputchar(dec[--i], f);
+	}
+}
+
 int serio_vfprintf(SERIOFILE *f, const char *fmt, va_list ap)
 {
 	while (*fmt != '\0') {
@@ -68,6 +86,14 @@ int serio_vfprintf(SERIOFILE *f, const char *fmt, va_list ap)
 		case 'X': {
 			unsigned long long x = va_arg(ap, unsigned long long);
 			_print_hex(f, x);
+		} break;
+		case 'u': {
+			unsigned int x = va_arg(ap, unsigned int);
+			_print_dec(f, x);
+		} break;
+		case 'U': {
+			unsigned long long x = va_arg(ap, unsigned long long);
+			_print_dec(f, x);
 		} break;
 		case 'c': {
 			char c = va_arg(ap, int);
