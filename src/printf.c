@@ -2,8 +2,8 @@
 
 #include <limits.h>
 #include <stdarg.h>
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 int serio_printf(const char *fmt, ...)
 {
