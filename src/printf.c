@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <stdarg.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 int serio_printf(const char *fmt, ...)
 {
@@ -49,7 +50,7 @@ void _print_hex(SERIOFILE *f, unsigned long long x)
 	}
 }
 
-void _print_dec(SERIOFILE *f, unsigned long long x)
+void _print_dec(SERIOFILE *f, unsigned long long x, bool neg)
 {
 	if (!x) {
 		serio_fputchar('0', f);
@@ -58,10 +59,13 @@ void _print_dec(SERIOFILE *f, unsigned long long x)
 
 	char dec[32];
 	int i = 0;
+	if (neg)
+		dec[i++] = '-';
 	while (x) {
-		hex[i++] = '0' + (x % 10);
+		dec[i++] = '0' + (x % 10);
 		x /= 10;
 	}
+
 	while (i) {
 		serio_fputchar(dec[--i], f);
 	}
@@ -89,11 +93,21 @@ int serio_vfprintf(SERIOFILE *f, const char *fmt, va_list ap)
 		} break;
 		case 'u': {
 			unsigned int x = va_arg(ap, unsigned int);
-			_print_dec(f, x);
+			_print_dec(f, x, false);
 		} break;
 		case 'U': {
 			unsigned long long x = va_arg(ap, unsigned long long);
-			_print_dec(f, x);
+			_print_dec(f, x, false);
+		} break;
+		case 'd': {
+			int x = va_arg(ap, unsigned int);
+			bool neg = x < 0;
+			_print_dec(f, neg ? -x : x, neg);
+		} break;
+		case 'D': {
+			long long x = va_arg(ap, unsigned long long);
+			bool neg = x < 0;
+			_print_dec(f, neg ? -x : x, neg);
 		} break;
 		case 'c': {
 			char c = va_arg(ap, int);
