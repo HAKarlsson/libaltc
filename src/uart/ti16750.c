@@ -5,22 +5,22 @@
 
 struct uart_regs {
 	union {
-		uint32_t rbr;
-		uint32_t thr;
-		uint32_t dlab_lsb;
+		unsigned int rbr;
+		unsigned int thr;
+		unsigned int dlab_lsb;
 	};
 
 	union {
-		uint32_t interrupt_enable;
-		uint32_t dlab_msb;
+		unsigned int interrupt_enable;
+		unsigned int dlab_msb;
 	};
 
-	uint32_t interrupt_ident;
-	uint32_t fifo_control;
-	uint32_t line_control;
-	uint32_t modem_control;
-	uint32_t line_status;
-	uint32_t modem_status;
+	unsigned int interrupt_ident;
+	unsigned int fifo_control;
+	unsigned int line_control;
+	unsigned int modem_control;
+	unsigned int line_status;
+	unsigned int modem_status;
 };
 
 void uart_ti16750_init(SERIOFILE *f)
