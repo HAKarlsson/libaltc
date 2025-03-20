@@ -9,29 +9,15 @@ int serio_printf(const char *fmt, ...)
 {
 	va_list ap;
 	va_start(ap, fmt);
-	int length = serio_vfprintf(_serio_out, fmt, ap);
+	int length = serio_vprintf(fmt, ap);
 	va_end(ap);
 	return length;
 }
 
-int serio_vprintf(const char *fmt, va_list ap)
-{
-	return serio_vfprintf(_serio_out, fmt, ap);
-}
-
-int serio_fprintf(SERIOFILE *f, const char *fmt, ...)
-{
-	va_list ap;
-	va_start(ap, fmt);
-	int length = serio_vfprintf(f, fmt, ap);
-	va_end(ap);
-	return length;
-}
-
-void _print_hex(SERIOFILE *f, unsigned long long x)
+void _print_hex(unsigned long long x)
 {
 	if (!x) {
-		serio_fputchar('0', f);
+		serio_putchar('0');
 		return;
 	}
 
@@ -46,14 +32,14 @@ void _print_hex(SERIOFILE *f, unsigned long long x)
 		x >>= 4;
 	}
 	while (i) {
-		serio_fputchar(hex[--i], f);
+		serio_putchar(hex[--i]);
 	}
 }
 
-void _print_dec(SERIOFILE *f, unsigned long long x, bool neg)
+void _print_dec(unsigned long long x, bool neg)
 {
 	if (!x) {
-		serio_fputchar('0', f);
+		serio_putchar('0');
 		return;
 	}
 
@@ -67,15 +53,15 @@ void _print_dec(SERIOFILE *f, unsigned long long x, bool neg)
 		dec[i++] = '-';
 
 	while (i) {
-		serio_fputchar(dec[--i], f);
+		serio_putchar(dec[--i]);
 	}
 }
 
-int serio_vfprintf(SERIOFILE *f, const char *fmt, va_list ap)
+int serio_vprintf(const char *fmt, va_list ap)
 {
 	while (*fmt != '\0') {
 		if (*fmt != '%') {
-			serio_fputchar(*fmt, f);
+			serio_putchar(*fmt);
 			fmt++;
 			continue;
 		}
@@ -85,40 +71,40 @@ int serio_vfprintf(SERIOFILE *f, const char *fmt, va_list ap)
 		switch (*fmt) {
 		case 'x': {
 			unsigned int x = va_arg(ap, unsigned int);
-			_print_hex(f, x);
+			_print_hex(x);
 		} break;
 		case 'X': {
 			unsigned long long x = va_arg(ap, unsigned long long);
-			_print_hex(f, x);
+			_print_hex(x);
 		} break;
 		case 'u': {
 			unsigned int x = va_arg(ap, unsigned int);
-			_print_dec(f, x, false);
+			_print_dec(x, false);
 		} break;
 		case 'U': {
 			unsigned long long x = va_arg(ap, unsigned long long);
-			_print_dec(f, x, false);
+			_print_dec(x, false);
 		} break;
 		case 'd': {
 			int x = va_arg(ap, unsigned int);
 			bool neg = x < 0;
-			_print_dec(f, neg ? -x : x, neg);
+			_print_dec(neg ? -x : x, neg);
 		} break;
 		case 'D': {
 			long long x = va_arg(ap, unsigned long long);
 			bool neg = x < 0;
-			_print_dec(f, neg ? -x : x, neg);
+			_print_dec(neg ? -x : x, neg);
 		} break;
 		case 'c': {
 			char c = va_arg(ap, int);
-			serio_fputchar(c, f);
+			serio_putchar(c);
 		} break;
 		case 's': {
 			char *s = va_arg(ap, char *);
-			serio_fputstr(s, f);
+			serio_putstr(s);
 		} break;
 		default:
-			serio_fputchar(*fmt, f);
+			serio_putchar(*fmt);
 		}
 		fmt++;
 	}

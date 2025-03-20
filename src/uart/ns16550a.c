@@ -1,4 +1,4 @@
-#include "serio/uart/ns16550a.h"
+#include "serio/ns16550a.h"
 
 // Line status register flags
 #define LSR_RX_READY 0x1  // Receive data ready
@@ -22,23 +22,23 @@ struct uart_regs {
 	char lsr; // Line status register
 };
 
-void uart_ns16550a_init(SERIOFILE *f)
+void serio_ns16550a_init(void *base)
 {
 }
 
-int uart_ns16550a_fputchar(int c, SERIOFILE *f)
+int serio_ns16550a_putchar(int c, void *base)
 {
-	volatile struct uart_regs *base = f->base;
-	while (!(base->lsr & LSR_TX_READY))
+	volatile struct uart_regs *regs = base;
+	while (!(regs->lsr & LSR_TX_READY))
 		;
-	base->thr = (unsigned char)c;
+	regs->thr = (unsigned char)c;
 	return (unsigned char)c;
 }
 
-int uart_ns16550a_fgetchar(SERIOFILE *f)
+int serio_ns16550a_getchar(void *base)
 {
-	volatile struct uart_regs *base = f->base;
-	while (!(base->lsr & LSR_RX_READY))
+	volatile struct uart_regs *regs = base;
+	while (!(regs->lsr & LSR_RX_READY))
 		;
-	return (unsigned char)base->rbr;
+	return (unsigned char)regs->rbr;
 }

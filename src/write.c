@@ -1,17 +1,12 @@
 #include "serio.h"
 
-int serio_fwrite(const char *s, size_t size, SERIOFILE *f)
+int serio_write(const char *s, size_t size)
 {
 	size_t i;
 	for (i = 0; i < size; ++i) {
-		if (f->fputchar(s[i], f) == EOF) {
+		if (serio_putchar(s[i]) == EOF) {
 			return -1; // Return an error code if writing fails
 		}
 	}
 	return i; // Return the number of bytes successfully written
-}
-
-int serio_write(const char *s, size_t size)
-{
-	return serio_fwrite(s, size, _serio_out);
 }

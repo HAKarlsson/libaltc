@@ -1,4 +1,4 @@
-#include "serio/uart/sifive.h"
+#include "serio/sifive.h"
 
 // Bit masks for transmit and receive adata registers
 #define TXDATA_FULL 0x80000000ul
@@ -21,25 +21,25 @@ struct uart_regs {
 	int div;    // Baud rate divisor
 };
 
-void uart_sifive_init(SERIOFILE *f)
+void serio_sifive_init(void *base)
 {
 }
 
-int uart_sifive_fputchar(int c, SERIOFILE *f)
+int serio_sifive_putchar(int c, void *base)
 {
-	volatile struct uart_regs *uart = f->base;
-	while (uart->txdata & TXDATA_FULL) {
+	volatile struct uart_regs *regs = base;
+	while (regs->txdata & TXDATA_FULL) {
 	}
-	uart->txdata = (unsigned char)c;
+	regs->txdata = (unsigned char)c;
 	return (unsigned char)c;
 }
 
-int uart_sifive_fgetchar(SERIOFILE *f)
+int serio_sifive_getchar(void *base)
 {
-	volatile struct uart_regs *uart = f->base;
+	volatile struct uart_regs *regs = base;
 	int c;
 	do {
-		c = uart->rxdata;
+		c = regs->rxdata;
 	} while (c & RXDATA_EMPTY);
 	return (unsigned char)c;
 }

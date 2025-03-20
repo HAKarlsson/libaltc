@@ -1,4 +1,4 @@
-#include "serio/uart/ti16750.h"
+#include "serio/ti16750.h"
 
 #define LSR_THR_EMPTY 0x20
 #define LSR_RBR_READY 0x1
@@ -23,23 +23,23 @@ struct uart_regs {
 	unsigned int modem_status;
 };
 
-void uart_ti16750_init(SERIOFILE *f)
+void serio_ti16750_init(void *base)
 {
 }
 
-int uart_ti16750_fputchar(int c, SERIOFILE *f)
+int serio_ti16750_putchar(int c, void *base)
 {
-	volatile struct uart_regs *base = f->base;
-	while (!(base->line_status & LSR_THR_EMPTY))
+	volatile struct uart_regs *regs = base;
+	while (!(regs->line_status & LSR_THR_EMPTY))
 		;
-	base->thr = (unsigned char)c;
+	regs->thr = (unsigned char)c;
 	return (unsigned char)c;
 }
 
-int uart_ti16750_fgetchar(SERIOFILE *f)
+int serio_ti16750_getchar(void *base)
 {
-	volatile struct uart_regs *base = f->base;
-	while (!(base->line_status & LSR_RBR_READY))
+	volatile struct uart_regs *regs = base;
+	while (!(regs->line_status & LSR_RBR_READY))
 		;
-	return (unsigned char)base->rbr;
+	return (unsigned char)regs->rbr;
 }
