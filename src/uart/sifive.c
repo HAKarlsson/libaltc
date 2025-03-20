@@ -11,7 +11,7 @@
 // Control register flags for setting stop bits
 #define TXCTRL_NSTOP 0x2ul
 
-struct uart_sifive_regs {
+struct uart_regs {
 	int txdata; // Transmit data register
 	int rxdata; // Receive data register
 	int txctrl; // Transmit control register
@@ -23,14 +23,11 @@ struct uart_sifive_regs {
 
 void uart_sifive_init(SERIOFILE *f)
 {
-	volatile struct uart_sifive_regs *uart = f->base;
-	uart->txctrl = TXCTRL_TXEN; // Enable transmit data
-	uart->rxctrl = RXCTRL_RXEN; // Enable receive data
 }
 
 int uart_sifive_fputchar(int c, SERIOFILE *f)
 {
-	volatile struct uart_sifive_regs *uart = f->base;
+	volatile struct uart_regs *uart = f->base;
 	while (uart->txdata & TXDATA_FULL) {
 	}
 	uart->txdata = (unsigned char)c;
@@ -39,7 +36,7 @@ int uart_sifive_fputchar(int c, SERIOFILE *f)
 
 int uart_sifive_fgetchar(SERIOFILE *f)
 {
-	volatile struct uart_sifive_regs *uart = f->base;
+	volatile struct uart_regs *uart = f->base;
 	int c;
 	do {
 		c = uart->rxdata;
